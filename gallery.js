@@ -4,24 +4,29 @@ $(document).ready(function() {
  $('form').submit(function (evt) {
     
    evt.preventDefault();
-   var $searchField = $('#search');
-   var $submitButton = $('#submit');
+   var $search = $('#search');
+   var $submit = $('#submit');
    
  
-     $searchField.prop('disabled',true);
-    $submitButton.attr('disabled',true).val('searching...');
+     $search.prop('disabled',true);
+    $submit.attr('disabled',true).val('searching...');
 
     // the AJAX part
-    var flickerAPI = "http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
-    var animal = $searchField.val();
-    var flickrOptions = {
-      tags: animal,
-      format: "json"
+    var movieTitle = $search.val();
+    var flickerAPI1 = "http://img.omdbapi.com/?";
+    var flickerAPI2 = flickerAPI1 + t=movieTitle;
+    var flickerAPI = flickerAPI2 + "&apikey=a1a18855";
+    
+    var OMDBOptions = {
+      type: movie,
+      r: "json",
+      t:movieTitle,
+      page:10
     };
-    function displayPhotos(data) {
+    function displayMovies(data) {
       var photoHTML = '<ul>';
       $.each(data.items,function(i,photo) {
-        photoHTML += '<li class="grid-25 tablet-grid-50">';
+        photoHTML += '<movieThumbnail>';
         photoHTML += '<a href="' + photo.link + '" class="image">';
         photoHTML += '<img src="' + photo.media.m + '"></a></li>';
       }); // end each
