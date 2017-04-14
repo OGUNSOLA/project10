@@ -1,42 +1,55 @@
 $(document).ready(function() {
+  
+ 
 
 
  $('form').submit(function (evt) {
-    
-   evt.preventDefault();
-   var $search = $('#search');
-   var $submit = $('#submit');
+    var $submitButton = $('#submit');
+    var $searchField = $('#search');
+    evt.preventDefault();
    
- 
-     $search.prop('disabled',true);
-    $submit.attr('disabled',true).val('searching...');
+    var gifSearch = $searchField.val();
+    var link1= "http://api.giphy.com/v1/gifs/search?q=";
+    var link2 = link1 + gifSearch;
+    var GifAPI = link2 +"&limit=12&rating=pg&api_key=dc6zaTOxFJmzC";
+    console.log(GifAPI);
 
-    // the AJAX part
-    var movieTitle = $search.val();
-    var flickerAPI1 = "http://img.omdbapi.com/?";
-    var flickerAPI2 = flickerAPI1 + t=movieTitle;
-    var flickerAPI = flickerAPI2 + "&apikey=a1a18855";
-    
-    var OMDBOptions = {
-      type: movie,
-      r: "json",
-      t:movieTitle,
-      page:10
-    };
-    function displayMovies(data) {
-      var photoHTML = '<ul>';
-      $.each(data.items,function(i,photo) {
-        photoHTML += '<movieThumbnail>';
-        photoHTML += '<a href="' + photo.link + '" class="image">';
-        photoHTML += '<img src="' + photo.media.m + '"></a></li>';
-      }); // end each
-      photoHTML += '</ul>';
-      $('#photos').html(photoHTML);
-       $searchField.prop('disabled',false);
-    $submitButton.attr('disabled',false).val('search');
-    }
-    $.getJSON(flickerAPI, flickrOptions, displayPhotos);
+
+    var gifList;
+    var gifHTML = "";
+    $.getJSON(GifAPI, function(response){
+        
+            $.each(response.data.images, function(i, image){
+                gifHTML += '<li class="imageList">';
+                gifHTML += '<a href="' + image.fixed_height.url + '">';
+                gifHTML += '<img src= " ' + image.fixed_width_small_still + ' "></a></li>';
+
+            });
+        
+        // for (var i=0; i< response.data;i++){
+        //     console.log(respose.data[i].images.fixed_height.url);
+        //     gifList += '<li class="imageList" ><a href="respose.data[i].images.fixed_height.url"> <img src="respose.data[i].images.fixed_width_small_still"/></a></li>';
+        // }
+    	
+    });
+
+    $('#gifs').html(gifHTML);
+
+
+   
 
   }); // end click
 
 }); // end ready
+
+// var photoHTML = '';
+//       if (data.items.length > 0) {
+//         $.each(data.items,function(i,photo) {
+//           photoHTML += '<li class="grid-25 tablet-grid-50">';
+//           photoHTML += '<a href="' + photo.link + '" class="image">';
+//           photoHTML += '<img src="' + photo.media.m + '"></a></li>';
+//         }); // end each
+//       } else {
+//         photoHTML = "<p>No photos found that match: " + animal + ".</p>"
+//       }
+//       $('#photos').html(photoHTML);
