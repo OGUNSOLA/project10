@@ -45,24 +45,35 @@ var $gifs = $('.gifs');
 var $overlay= $('<div class="overlay"></div>');
 var $overlayContainer= $('<div class="overlayContainer"></div>');
 var $overlayImage= $('<img>');
+var $next = $('<button id="next">NEXT</button>');
+var $previous = $('<button id="previous">PREVIOUS</button>');
 
 $('body').append($overlay);
  $overlay.append($overlayContainer);
  $overlayContainer.append($overlayImage);
+$overlay.append($next);
+$overlay.append($previous);
+$overlay.append('<p>CLICK IMAGE TO CLOSE</p>');
+
 
 
 
 $gifs.on('click', 'a', function(evt){
     evt.preventDefault();
     var realImageLocation = $(this).attr('href');
-    console.log(realImageLocation);
     $overlayImage.attr('src',realImageLocation);
     $overlay.show();
 })
 
-$overlay.click(function(){
+$overlayContainer.click(function(){
     $overlay.hide();
 })
+
+$next.click(function() {
+    $parentImage= $overlayImage.parent().next();
+ 
+
+});
 
 
 });
