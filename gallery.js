@@ -24,7 +24,7 @@ $(document).ready(function() {
             gifHTML += '<a href=" ' + response.data[i].images.fixed_height.url + ' ">';
             gifHTML += '<img src= " ' + response.data[i].images.fixed_width_small_still.url + ' "></a></li>';
          }
-         $('#gifs').html(gifHTML);
+         $('.gifs').html(gifHTML);
      
     	
     });
@@ -35,5 +35,34 @@ $(document).ready(function() {
    
 
   }); 
+
+
+ //lightbox code
+
+ 
+
+var $gifs = $('.gifs');
+var $overlay= $('<div class="overlay"></div>');
+var $overlayContainer= $('<div class="overlayContainer"></div>');
+var $overlayImage= $('<img>');
+
+$('body').append($overlay);
+ $overlay.append($overlayContainer);
+ $overlayContainer.append($overlayImage);
+
+
+
+$gifs.on('click', 'a', function(evt){
+    evt.preventDefault();
+    var realImageLocation = $(this).attr('href');
+    console.log(realImageLocation);
+    $overlayImage.attr('src',realImageLocation);
+    $overlay.show();
+})
+
+$overlay.click(function(){
+    $overlay.hide();
+})
+
 
 });
