@@ -1,23 +1,41 @@
 $(document).ready(function() {
-  
+   var searchField = $("#search");
+   var submitbtn = $("#submit");
  
 
 
  $('form').submit(function (evt) {
-    var $submitButton = $('#submit');
-    var $searchField = $('#search');
     evt.preventDefault();
    
-    var gifSearch = $searchField.val();
+    searchField.prop("disabled", true);
+    submitbtn.attr("disabled", true).val("Searching...");
+    
+   
+    var gifSearch = searchField.val();
     var link1= "http://api.giphy.com/v1/gifs/search?q=";
     var link2 = link1 + gifSearch;
     var GifAPI = link2 +"&limit=12&rating=pg&api_key=dc6zaTOxFJmzC";
+    console.log(GifAPI);
+
+
+     
+          var gifHTML = "";
+         $.getJSON(GifAPI, function(response){
+
+        if (response.data.length == 0) {
+        var errorMessage = "<p>" + gifSearch + " does not exist on the platform, try another serach key.</p>";
+        $('#errorMessage').html(errorMessage);
+        setTimeout(function(){
+            $('#errorMessage').html("");
+        }, 10000);
+
+        searchField.prop("disabled", false);
+        submitbtn.attr("disabled", false).val("Search");
+
+    } else {
 
 
 
-    
-    var gifHTML = "";
-    $.getJSON(GifAPI, function(response){
 
           for(var i=0; i < response.data.length;i++){
             gifHTML += '<div class="gallery">';
@@ -27,10 +45,18 @@ $(document).ready(function() {
             gifHTML += '</div>';
          }
          $('.gifs').html(gifHTML);
-     
-    	
-    });
+          
+     }
 
+     searchField.prop("disabled", false);
+    submitbtn.attr("disabled", false).val("Search");
+        
+    });
+       
+
+    // }
+    
+    
    
 
 
@@ -93,9 +119,9 @@ $nextImage.click(function(){
 });
 
 $previousImage.click(function(){
-    parentImage = $(image).parent().parent().previous();
+    parentImage = $(image).parent().parent().prev();
    if (parentImage.length!=0){
-        newImage=$(parentImage).children('a')
+        newImage=$(parentImage).children().children('a')
     }
     theCurrentImage(newImage); 
 });

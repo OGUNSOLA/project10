@@ -7,6 +7,27 @@ body {
 	padding: 5%;
 	margin: 0 auto;
 }
+
+input {
+	 padding: 10px;
+  border: solid 1px #dcdcdc;
+  transition: box-shadow 0.3s, border 0.3s;
+}
+
+form label {
+	font-size: 16px;
+	font-weight: bold;
+}
+
+h1,form{
+	text-align: center;
+}
+
+#errorMessage {
+	text-align: center;
+	font-size: 16px;
+	font-weight: bold;
+}
 .overlay {
 	
 	display: none;
