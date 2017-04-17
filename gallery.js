@@ -20,9 +20,11 @@ $(document).ready(function() {
     $.getJSON(GifAPI, function(response){
 
           for(var i=0; i < response.data.length;i++){
+            gifHTML += '<div class="gallery">';
             gifHTML += '<li class="imageList">';
             gifHTML += '<a href=" ' + response.data[i].images.fixed_height.url + ' ">';
             gifHTML += '<img src= " ' + response.data[i].images.fixed_width_small_still.url + ' "></a></li>';
+            gifHTML += '</div>';
          }
          $('.gifs').html(gifHTML);
      
@@ -47,8 +49,8 @@ var $overlayContainer= $('<div class="overlayContainer"></div>');
 var $overlayImage= $('<img>');
 var $nextImage = $('<button id="next">NEXT</button>');
 var $previousImage = $('<button id="previous">PREVIOUS</button>');
-var $image;
-var $realImageLocation; 
+var image;
+ 
 
 $('body').append($overlay);
  $overlay.append($overlayContainer);
@@ -56,29 +58,49 @@ $('body').append($overlay);
 $overlay.append($nextImage);
 $overlay.append($previousImage);
 $overlay.append('<p>CLICK IMAGE TO CLOSE</p>');
+$overlay.append('<p class="appreciate">Powered by giffy.com</p>');
 
 
 
 
-$gifs.on('click', 'a', function(evt){
+$gifs.on('click', 'a',function(evt){
     evt.preventDefault();
-    $realImageLocation = $(this).attr('href');
-    $image = this;
-    $overlayImage.attr('src',$realImageLocation);
     $overlay.show();
-})
+    theCurrentImage(this);
+});
+
+function theCurrentImage(clickedImage){
+    image = clickedImage;
+    var displayedImage = $(image).attr('href');
+    $overlayImage.attr('src', displayedImage);
+    
+
+}
 
 $overlayContainer.click(function(){
     $overlay.hide();
-})
-
-$nextImage.click(function() {
-    // console.log($image.sibbling.next;
-     $parentImage= $image.parent().next();
-     console.log($parentImage);
- 
-
 });
+
+
+
+
+$nextImage.click(function(){
+    parentImage = $(image).parent().parent().next();
+   if (parentImage.length!=0){
+        newImage=$(parentImage).children().children('a')
+    }
+    theCurrentImage(newImage); 
+});
+
+$previousImage.click(function(){
+    parentImage = $(image).parent().parent().previous();
+   if (parentImage.length!=0){
+        newImage=$(parentImage).children('a')
+    }
+    theCurrentImage(newImage); 
+});
+
+
 
 
 });
